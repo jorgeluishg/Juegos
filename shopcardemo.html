@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+  
+function showpage(idpage){
+  //alert(idpage);
+
+  if (idpage==0)
+  {
+      $("#home").show();
+      $("#customer").hide();
+      
+      $("#car").hide();
+      $("#payment").hide();
+  }
+  if (idpage==1)
+  {
+      $("#customer").show();
+      $("#home").hide();
+      $("#car").hide();
+      $("#payment").hide();
+  }
+  if (idpage==2)
+  {
+      $("#car").show();
+      $("#customer").hide();
+      $("#home").hide();
+      
+      $("#payment").hide();
+  }
+
+  if (idpage==3)
+  {
+      $("#payment").show();
+      $("#car").hide();
+      $("#customer").hide();
+      $("#home").hide();
+      
+      
+  }
+}
+</script>
+</head>
+<body onload="initialize()">
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+
+                <div id="status">
+                status
+                </div>
+        
+            </a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li><a href="#" onclick="showpage(0)">Login</a></bli>
+            <li><a href="#" onclick="showpage(1)">Customer</a></li>
+            <li><a href="#" onclick="showpage(2)">Car</a></li>
+            <li><a href="#" onclick="showpage(3)">Payment</a></li>
+          </ul>
+        </div>
+      </nav>
+        
+      <div class="container" id="home">
+        <h3>Login</h3>
+
+        <script>
+            // This is called with the results from from FB.getLoginStatus().
+            function statusChangeCallback(response) {
+              console.log('statusChangeCallback');
+              console.log(response);
+              // The response object is returned with a status field that lets the
+              // app know the current login status of the person.
+              // Full docs on the response object can be found in the documentation
+              // for FB.getLoginStatus().
+              if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                testAPI();
+              } else {
+                // The person is not logged into your app or we are unable to tell.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                  'into this app.';
+              }
+            }
+          
+            // This function is called when someone finishes with the Login
+            // Button.  See the onlogin handler attached to it in the sample
+            // code below.
+            function checkLoginState() {
+              FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+              });
+            }
+          
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '1352871488191487',
+                cookie     : true,  // enable cookies to allow the server to access 
+                                    // the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.8' // use graph api version 2.8
+              });
+          
+              // Now that we've initialized the JavaScript SDK, we call 
+              // FB.getLoginStatus().  This function gets the state of the
+              // person visiting this page and can return one of three states to
+              // the callback you provide.  They can be:
+              //
+              // 1. Logged into your app ('connected')
+              // 2. Logged into Facebook, but not your app ('not_authorized')
+              // 3. Not logged into Facebook and can't tell if they are logged into
+              //    your app or not.
+              //
+              // These three cases are handled in the callback function.
+          
+              FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+              });
+          
+            };
+          
+            // Load the SDK asynchronously
+            (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "https://connect.facebook.net/en_US/sdk.js";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+          
+            // Here we run a very simple test of the Graph API after login is
+            // successful.  See statusChangeCallback() for when this call is made.
+            function testAPI() {
+              console.log('Welcome!  Fetching your information.... ');
+              FB.api('/me', function(response) {
+                console.log('Successful login for: ' + response.name);
+                document.getElementById('status').innerHTML =
+                  'Thanks for logging in, ' + response.name + '!';
+              });
+            }
+          </script>
+          
+          <!--
+            Below we include the Login Button social plugin. This button uses
+            the JavaScript SDK to present a graphical Login button that triggers
+            the FB.login() function when clicked.
+          -->
+          
+          <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+          </fb:login-button>
+         
+        
+     </div>
+      
+      <div class="container" id="customer" style="display: none">
+          <h3>Customer</h3>
+          <p>customer here</p>
+        </div>
+      
+        <div class="container" id="car" style="display: none">
+          <h3>Shopping Car</h3>
+          
+          <label>Productos</label>
+
+                                        <select  id="id_productos"  onchange="getDataProductos()">
+                                              
+                                        </select>
+                                                
+                                            
+                                                <label for="Precio">Precio</label>
+                                    
+                                        <input placeholder="0.00" id="Precio" type="text">
+                                  
+                        
+                                        <label for="Precio">Cantidad</label>
+                        
+                                        <input type="text" size="1" id="Cantidad" value="1"
+                                            onkeydown="if (event.keyCode == 13) document.getElementById('addShoppingCar').click()"/>
+                        
+                                        
+                                  
+                                        <input type="button"  id="addShoppingCar" onclick="addCar()"  value=" + "/>   
+                                       
+                                        <input type="text"  id="url" />   
+                                       
+                        
+                                            
+                                  
+                                  
+                             
+       
+                            <table id="tableProducts" border="1" >
+		
+                                <thead>
+                                    <tr>
+                                        <th width="35" id="Cant">Cant</th>
+                                        <th width="35" id="Nombre">Nombre</th>
+                                        <th width="35" id="Prec">Prec</th>
+                                        <th width="35" id="Imag">Imagen</th>
+                                        <th width="35" id="Desc">Descuento</th>
+                                        <th width="35" id="Imp">Imp</th>
+                                        <th width="40" id="borrar">Borrar</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                       
+
+                           <table border="0">
+                                <tr>
+                                     
+                                     <td>Total Importe: $</td>
+                                     <td> <div id="totalImporte" /></td>
+                                     
+                                    <td>Tot Uni:</td>
+                                     <td> <div id="totalUnidades" /></td>
+                                     
+                                     </tr>    
+                            </table>
+        </div>
+        </div>
+      
+        <div class="container" id="payment" style="display: none">
+          <h3>Payment</h3>
+
+          <p>Payment here</p>
+          <input type="button"  id="payment" onclick="deleteCar()"  value=" Pagar "/>
+        </div>
+      
+
+
+
+
+</body>
+</html>
+<script>
+
+  var myDataProductos;
+  
+  function getDataProductos(){
+  
+  var my_producto = $("#id_productos").val();
+  
+              myDataProductos.forEach(function (tweet) 
+                  {
+                      //alert(tweet.nombre);
+                      if (tweet.id == my_producto)
+                      {
+                          
+                          $('#Precio').val(tweet.price);
+                          $('#url').val(tweet.url);
+  
+                      }
+                     
+                  });
+  
+  
+  }
+  
+  
+  function getProducts(){
+  
+  var listProducts = []
+  
+  var myProduct1 = new ShoppingCarProduct();
+  myProduct1.id = "001";
+  myProduct1.name = "Laptop Dell";
+  myProduct1.price = "12000";
+  myProduct1.url = "https://http2.mlstatic.com/laptop-dell-e6420-core-i5-4gb-ram-500gb-hdd-seminuevas-D_NQ_NP_923796-MLM26742841903_012018-O.webp";
+  
+  var myProduct2 = new ShoppingCarProduct();
+  myProduct2.id = "002";
+  myProduct2.name = "Xbox One S";
+  myProduct2.price = "9500";
+  myProduct2.url = "https://www.gamestop.com/common/images/lbox/909250b.jpg";
+  var myProduct3 = new ShoppingCarProduct();
+  myProduct3.id = "003";
+  myProduct3.name = "RaspBerry Pi 3";
+  myProduct3.price = "1250";
+  myProduct3.url = "https://http2.mlstatic.com/laptop-dell-e6420-core-i5-4gb-ram-500gb-hdd-seminuevas-D_NQ_NP_923796-MLM26742841903_012018-O.webp";
+  
+  var myProduct4 = new ShoppingCarProduct();
+  myProduct4.id = "004";
+  myProduct4.name = "Play station ";
+  myProduct4.price = "1254";
+  myProduct4.url = "https://http2.mlstatic.com/laptop-dell-e6420-core-i5-4gb-ram-500gb-hdd-seminuevas-D_NQ_NP_923796-MLM26742841903_012018-O.webp";
+  
+  var myProduct5 = new ShoppingCarProduct();
+  myProduct5.id = "005";
+  myProduct5.name = "Nintendo ds";
+  myProduct5.price = "1245";
+  myProduct5.url = "https://http2.mlstatic.com/laptop-dell-e6420-core-i5-4gb-ram-500gb-hdd-seminuevas-D_NQ_NP_923796-MLM26742841903_012018-O.webp";
+  
+  var myProduct6 = new ShoppingCarProduct();
+  myProduct6.id = "006";
+  myProduct6.name = "Dragon ball figters Z";
+  myProduct6.price = "1250";
+  myProduct6.url = "https://http2.mlstatic.com/laptop-dell-e6420-core-i5-4gb-ram-500gb-hdd-seminuevas-D_NQ_NP_923796-MLM26742841903_012018-O.webp";
+
+  listProducts.push(myProduct1);
+  listProducts.push(myProduct2);
+  listProducts.push(myProduct3);
+  listProducts.push(myProduct4);
+  listProducts.push(myProduct5);
+  listProducts.push(myProduct6);
+  
+  try
+  { 
+      tweets = JSON.stringify(listProducts);
+      alert(tweets);
+    
+      
+      tweets = JSON.parse(tweets);
+      alert(tweets);
+      myDataProductos = tweets; 
+          
+              tweets.forEach(function (tweet) 
+                  {
+                      alert(tweet.id + "- " + tweet.name);
+                      $('#id_productos').append($("<option></option>").attr("value", 
+                                                       tweet.id).text(tweet.name));
+  
+                  });
+                  
+    
+    
+  }
+  catch(e)
+  {
+    alert("error : " +  e);
+   }
+  }
+  
+  
+  // <!-- Shopping Car -->
+  
+  var currentUserShoppingCart;
+  var i;
+  
+  
+  Storage.prototype.setObject = function (key, value) {
+     this.setItem(key, JSON.stringify(value));
+  }
+  
+  Storage.prototype.getObject = function (key) {
+     return this.getItem(key) && JSON.parse(this.getItem(key));
+  }
+  
+  
+  function HeaderShoppingCar()
+  {
+     this.idMov = 0;
+     this.idUser = 0;
+     this.idCliente = 0;
+     this.nombreCliente = '';
+     this.tipoMov = 0;
+  
+     this.strSerie = '';
+     this.strFolio = '';
+  
+     this.strConcepto = '';
+     this.strFormaPago ='';
+     this.decSubTotal =0;
+     
+     this.decDescuento =0;
+     this.decIva =0;
+     this.decTotal = 0;
+  
+  }
+  
+  function ShoppingCarItem()
+  {
+     this.Par = i;
+     this.ProductID = 0;
+  
+     this.ProductName = '';
+     this.Precio = 0;
+     this.Cantidad = 0;
+  
+     this.Importe = 0;
+     this.PorcDesc1 = 0;
+     this.PorcDesc2 = 0;
+     this.PorcDesc3 = 0;
+     this.Desc1 = 0;
+     this.Desc2 = 0;
+     this.Desc3 = 0;
+     this.ImporteNeto = 0;
+     this.url='';
+     
+  }
+  
+  
+  function ShoppingCarProduct()
+  {
+     this.id = 0;
+     this.name = '';
+     this.price = 0;
+     this.url = '';
+     this.desc = 0;
+  }
+  
+  
+  function initialize()
+  {
+     currentUserShoppingCart = new Array();
+     i = 0;
+     getProducts();
+  }
+  
+  
+  function addCar()
+  {
+  
+     try
+     {
+  
+         var cantidad = document.getElementById("Cantidad").value;
+  
+         if (cantidad == "") throw "TECLEAR CANTIDAD !";
+         if (isNaN(cantidad)) throw "SOLO NUMEROS";
+         if (cantidad < 1) throw "CANT DEBE SER MAYOR DE 0";
+  
+         var item = new ShoppingCarItem();
+         item.Par = i+1;
+         item.ProductID = $("#id_productos").val();
+  
+         item.ProductName = $("#id_productos :selected").text().toUpperCase(); 
+  
+         item.Precio = parseFloat(document.getElementById("Precio").value);
+         item.Cantidad = cantidad;
+         var importe = 0;
+   
+         importe = item.Precio * item.Cantidad;
+   
+         item.Importe = Math.round(importe * 100) / 100;
+        item.url= $("#url").val();
+
+         
+         var exist = 0;
+         for (var c = currentUserShoppingCart.length; c--;) {
+             var it = currentUserShoppingCart[c];
+  
+  
+             if (it.ProductID == item.ProductID) {
+                 var Cantidad = 0;
+                 Cantidad = parseFloat(currentUserShoppingCart[c].Cantidad);
+                 Cantidad += parseFloat(item.Cantidad);
+                 currentUserShoppingCart[c].Cantidad = Cantidad;
+  
+                 var importe = 0;
+         
+                 importe = item.Precio * Cantidad;
+   
+                 currentUserShoppingCart[c].Importe = Math.round(importe * 100) / 100;
+   
+                 exist = 1;
+             }
+  
+  
+         }
+  
+         if (exist == 0)
+         {
+             currentUserShoppingCart[i] = item;
+             i++;
+         }
+  
+         sessionStorage.setObject('UserShoppingCart', currentUserShoppingCart);
+         //alert("show");
+         showScar();
+         document.getElementById("Precio").innerHTML = '0';
+         document.getElementById('id_productos').focus();
+     }
+     catch (err) {
+         var msgError = "Ocurrio un error en la página.\n\n";
+         msgError += "Descripción: " + err + "\n\n";
+         msgError += "Click OK para continuar.\n\n";
+  
+         document.getElementById('Cantidad').value = '';
+         document.getElementById('Cantidad').focus();
+         alert(msgError);
+  
+     }
+  }
+  
+  
+  
+  function showScar()
+  {
+     var tableCirs = document.getElementById('tableProducts');
+     
+     for (var c = tableCirs.rows.length - 1; c > 0; c--)
+     {
+         tableCirs.deleteRow(c);
+     }
+  
+     var userShoppingCart = sessionStorage.getObject('UserShoppingCart');
+  
+     if (!userShoppingCart) {
+         $('car').innerHTML = '<br />UserShoppingCart does NOT exist in sessionStorage.';
+         return;
+     }
+  
+    
+     var totalUni = 0;
+     var totImporte = 0;
+   
+     userShoppingCart.forEach(function (tweet) {
+  
+         //alert("" + tweet.cir);
+  
+         var rowCir = tableCirs.insertRow(-1);
+  
+         var rowCount = tableCirs.rows.length - 1;
+  
+         var cellCantidad = rowCir.insertCell(0);
+         var cellProducto = rowCir.insertCell(1);
+         var cellPrecio = rowCir.insertCell(2);
+         var cellurl    = rowCir.insertCell(3);
+         var celldesc   = rowCir.insertCell(4);
+         var cellImporte = rowCir.insertCell(5);
+         var cellBorrar = rowCir.insertCell(6);
+         alert(tweet.url);
+         var imagen = "<img src="+tweet.url + ">";
+        //alert(imagen);
+         var url = "<a href=\"javascript: void();\" onclick=\"deleteItem(" + tweet.ProductID + ")\">Borrar</a>";
+         var desc = 50 + tweet.desc;
+         cellCantidad.innerHTML = tweet.Cantidad;
+         cellProducto.innerHTML = tweet.ProductName;
+         cellPrecio.innerHTML = tweet.Precio;
+         cellurl.innerHTML  = imagen;
+         celldesc.innerHTML = desc;
+         cellImporte.innerHTML = tweet.Importe;
+         cellBorrar.innerHTML = url;
+  
+         totalUni += parseFloat(tweet.Cantidad);
+       
+         totImporte += tweet.Importe;
+   
+     });
+  
+     document.getElementById('totalUnidades').innerHTML = '<b>' + parseFloat(totalUni) + '</b>';
+  
+     document.getElementById('totalImporte').innerHTML = '<b>' + totImporte + '</b>';
+      
+  }
+  
+  function deleteItem(item)
+  {
+      alert(item);
+     for (var c = currentUserShoppingCart.length; c--;)
+     {
+         var it = currentUserShoppingCart[c];
+       
+         
+         if (it.ProductID == item)
+         {
+             currentUserShoppingCart.splice(c, 1);
+             i--;
+         }
+  
+         
+     }
+     sessionStorage.setObject('UserShoppingCart', currentUserShoppingCart);
+     showScar();
+  
+  }
+  
+  function clearSessionStorage()
+  {
+     sessionStorage.clear();
+  }
+  
+  // <!-- Shopping Car -->
+  
+  </script>
+  
